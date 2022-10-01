@@ -10,6 +10,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+const dbName string = "grocery-store"
+
 func ConnectDB() *mongo.Client {
 	// credential := options.Credential{
 	// 	Username: "user",
@@ -41,6 +43,6 @@ var DB *mongo.Client = ConnectDB()
 
 // getting database collections
 func GetCollection(client *mongo.Client, collectionName string) *mongo.Collection {
-	collection := client.Database("grocery-store").Collection(collectionName)
+	collection := client.Database(dbName).Collection(collectionName)
 	return collection
 }
