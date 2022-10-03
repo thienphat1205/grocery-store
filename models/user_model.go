@@ -7,4 +7,5 @@ type User struct {
 	Name     string             `json:"name,omitempty"  bson:"user_name,omitempty" validate:"required"`
 	Location string             `json:"location,omitempty" bson:"user_location,omitempty" validate:"required"`
 	Title    string             `json:"title,omitempty" bson:"user_title,omitempty" validate:"required"`
+	Store    string             `json:"storeId,omitempty" bson:"store_id,omitempty" validate:"required"`
 }

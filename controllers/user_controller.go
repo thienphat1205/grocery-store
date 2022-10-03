@@ -27,12 +27,17 @@ func CreateUser(c echo.Context) error {
 	if validationErr := validate.Struct(&user); validationErr != nil {
 		return c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: &echo.Map{"data": validationErr.Error()}})
 	}
+	var storeIsValid bool = VerifyStoreById(user.Store)
+	if !storeIsValid {
+		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "StoreId invalid"})
+	}
 
 	newUser := models.User{
 		Id:       primitive.NewObjectID(),
 		Name:     user.Name,
 		Location: user.Location,
 		Title:    user.Title,
+		Store:    user.Store,
 	}
 
 	result, err := userCollection.InsertOne(ctx, newUser)
@@ -76,11 +81,17 @@ func EditAUser(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: &echo.Map{"data": validationErr.Error()}})
 	}
 
+	var storeIsValid bool = VerifyStoreById(user.Store)
+	if !storeIsValid {
+		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "StoreId invalid"})
+	}
+
 	// update := bson.M{"user_name": user.Name, "user_location": user.Location, "user_title": user.Title}
 	update := models.User{
 		Name:     user.Name,
 		Location: user.Location,
 		Title:    user.Title,
+		Store:    user.Store,
 	}
 
 	result, err := userCollection.UpdateOne(ctx, bson.M{"_id": objId}, bson.M{"$set": update})

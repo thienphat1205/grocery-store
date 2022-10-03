@@ -45,6 +45,7 @@ func CreateStore(c echo.Context) error {
 func GetStoreById(c echo.Context) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	storeId := c.Param("storeId")
+	// var store bson.M
 	var store models.Store
 	defer cancel()
 
@@ -143,4 +144,16 @@ func GetAllStores(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, responses.StoreResponse{Status: http.StatusOK, Message: "success", Data: &echo.Map{"data": stores}})
+}
+
+func VerifyStoreById(storeId string) bool {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	objId, _ := primitive.ObjectIDFromHex(storeId)
+	result := storeCollection.FindOne(ctx, bson.M{"_id": objId})
+	isValid := true
+	if result != nil && result.Err() != nil {
+		isValid = false
+	}
+	return isValid
 }
