@@ -17,7 +17,8 @@ func main() {
 	configs.ConnectDB()
 
 	//routes
-	routes.UserRoute(e) //add this
+	routes.UserRoute(e)
+	routes.StoreRoute(e)
 
 	httpPort := os.Getenv("HTTP_PORT")
 	if httpPort == "" {
