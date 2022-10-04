@@ -20,16 +20,16 @@ func CreateUser(c echo.Context) error {
 
 	//validate the request body
 	if err := c.Bind(&user); err != nil {
-		return c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: &echo.Map{"data": err.Error()}})
+		return c.JSON(http.StatusBadRequest, responses.Response{Status: http.StatusBadRequest, Message: "error", Data: &echo.Map{"data": err.Error()}})
 	}
 
 	//use the validator library to validate required fields
 	if validationErr := validate.Struct(&user); validationErr != nil {
-		return c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: &echo.Map{"data": validationErr.Error()}})
+		return c.JSON(http.StatusBadRequest, responses.Response{Status: http.StatusBadRequest, Message: "error", Data: &echo.Map{"data": validationErr.Error()}})
 	}
 	var storeIsValid bool = VerifyStoreById(user.Store)
 	if !storeIsValid {
-		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "StoreId invalid"})
+		return c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "StoreId invalid"})
 	}
 
 	newUser := models.User{
@@ -42,10 +42,10 @@ func CreateUser(c echo.Context) error {
 
 	result, err := userCollection.InsertOne(ctx, newUser)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: &echo.Map{"data": err.Error()}})
+		return c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: &echo.Map{"data": err.Error()}})
 	}
 
-	return c.JSON(http.StatusCreated, responses.UserResponse{Status: http.StatusCreated, Message: "success", Data: &echo.Map{"data": result}})
+	return c.JSON(http.StatusCreated, responses.Response{Status: http.StatusCreated, Message: "success", Data: &echo.Map{"data": result}})
 }
 
 func GetUserById(c echo.Context) error {
@@ -59,10 +59,10 @@ func GetUserById(c echo.Context) error {
 	err := userCollection.FindOne(ctx, bson.M{"_id": objId}).Decode(&user)
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: &echo.Map{"data": err.Error()}})
+		return c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: &echo.Map{"data": err.Error()}})
 	}
 
-	return c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: &echo.Map{"data": user}})
+	return c.JSON(http.StatusOK, responses.Response{Status: http.StatusOK, Message: "success", Data: &echo.Map{"data": user}})
 }
 
 func EditAUser(c echo.Context) error {
@@ -73,17 +73,17 @@ func EditAUser(c echo.Context) error {
 	objId, _ := primitive.ObjectIDFromHex(userId)
 	//validate the request body
 	if err := c.Bind(&user); err != nil {
-		return c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: &echo.Map{"data": err.Error()}})
+		return c.JSON(http.StatusBadRequest, responses.Response{Status: http.StatusBadRequest, Message: "error", Data: &echo.Map{"data": err.Error()}})
 	}
 
 	//use the validator library to validate required fields
 	if validationErr := validate.Struct(&user); validationErr != nil {
-		return c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: &echo.Map{"data": validationErr.Error()}})
+		return c.JSON(http.StatusBadRequest, responses.Response{Status: http.StatusBadRequest, Message: "error", Data: &echo.Map{"data": validationErr.Error()}})
 	}
 
 	var storeIsValid bool = VerifyStoreById(user.Store)
 	if !storeIsValid {
-		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "StoreId invalid"})
+		return c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "StoreId invalid"})
 	}
 
 	// update := bson.M{"user_name": user.Name, "user_location": user.Location, "user_title": user.Title}
@@ -97,7 +97,7 @@ func EditAUser(c echo.Context) error {
 	result, err := userCollection.UpdateOne(ctx, bson.M{"_id": objId}, bson.M{"$set": update})
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: &echo.Map{"data": err.Error()}})
+		return c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: &echo.Map{"data": err.Error()}})
 	}
 
 	//get updated user details
@@ -106,11 +106,11 @@ func EditAUser(c echo.Context) error {
 		err := userCollection.FindOne(ctx, bson.M{"_id": objId}).Decode(&updatedUser)
 
 		if err != nil {
-			return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: &echo.Map{"data": err.Error()}})
+			return c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: &echo.Map{"data": err.Error()}})
 		}
 	}
 
-	return c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: &echo.Map{"data": updatedUser}})
+	return c.JSON(http.StatusOK, responses.Response{Status: http.StatusOK, Message: "success", Data: &echo.Map{"data": updatedUser}})
 }
 
 func DeleteAUser(c echo.Context) error {
@@ -123,14 +123,14 @@ func DeleteAUser(c echo.Context) error {
 	result, err := userCollection.DeleteOne(ctx, bson.M{"_id": objId})
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: &echo.Map{"data": err.Error()}})
+		return c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: &echo.Map{"data": err.Error()}})
 	}
 
 	if result.DeletedCount < 1 {
-		return c.JSON(http.StatusNotFound, responses.UserResponse{Status: http.StatusNotFound, Message: "error", Data: &echo.Map{"data": "User with specified ID not found!"}})
+		return c.JSON(http.StatusNotFound, responses.Response{Status: http.StatusNotFound, Message: "error", Data: &echo.Map{"data": "User with specified ID not found!"}})
 	}
 
-	return c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: &echo.Map{"data": "User successfully deleted!"}})
+	return c.JSON(http.StatusOK, responses.Response{Status: http.StatusOK, Message: "success", Data: &echo.Map{"data": "User successfully deleted!"}})
 }
 
 func GetAllUsers(c echo.Context) error {
@@ -141,7 +141,7 @@ func GetAllUsers(c echo.Context) error {
 	results, err := userCollection.Find(ctx, bson.M{})
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: &echo.Map{"data": err.Error()}})
+		return c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: &echo.Map{"data": err.Error()}})
 	}
 
 	//reading from the db in an optimal way
@@ -149,11 +149,11 @@ func GetAllUsers(c echo.Context) error {
 	for results.Next(ctx) {
 		var singleUser models.User
 		if err = results.Decode(&singleUser); err != nil {
-			return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: &echo.Map{"data": err.Error()}})
+			return c.JSON(http.StatusInternalServerError, responses.Response{Status: http.StatusInternalServerError, Message: "error", Data: &echo.Map{"data": err.Error()}})
 		}
 
 		users = append(users, singleUser)
 	}
 
-	return c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: &echo.Map{"data": users}})
+	return c.JSON(http.StatusOK, responses.Response{Status: http.StatusOK, Message: "success", Data: &echo.Map{"data": users}})
 }

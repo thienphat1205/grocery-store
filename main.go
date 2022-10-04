@@ -19,6 +19,7 @@ func main() {
 	//routes
 	routes.UserRoute(e)
 	routes.StoreRoute(e)
+	routes.ProductRoute(e)
 
 	httpPort := os.Getenv("HTTP_PORT")
 	if httpPort == "" {
