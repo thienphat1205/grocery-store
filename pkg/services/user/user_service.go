@@ -3,10 +3,6 @@ package user
 import (
 	"context"
 	api "my-store/api/user"
-	"my-store/pkg/models"
-	"my-store/pkg/services"
-
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func UserService() api.UserService {
@@ -23,18 +19,18 @@ func (rcv sortingIssueService) CreateUser(ctx context.Context, request *api.Crea
 
 	//validate the request body
 
-	newUser := models.User{
-		Id:       primitive.NewObjectID(),
-		Name:     request.Name,
-		Location: request.Location,
-		Title:    request.Title,
-		Store:    request.Store,
-	}
+	// newUser := models.User{
+	// 	Id:       primitive.NewObjectID(),
+	// 	Name:     request.Name,
+	// 	Location: request.Location,
+	// 	Title:    request.Title,
+	// 	Store:    request.Store,
+	// }
 
-	_, err := services.UserCollection.InsertOne(ctx, newUser)
-	if err != nil {
-		return nil, err
-	}
+	// _, err := services.UserCollection.InsertOne(ctx, newUser)
+	// if err != nil {
+	// 	return nil, err
+	// }
 
 	return nil, nil
 }

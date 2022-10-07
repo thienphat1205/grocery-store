@@ -9,6 +9,7 @@ require (
 	go.mongodb.org/mongo-driver v1.10.2
 	go.uber.org/zap v1.23.0
 	golang.org/x/net v0.0.0-20211112202133-69e39bad7dc2
+	gopkg.in/ini.v1 v1.67.0
 )
 
 require (
