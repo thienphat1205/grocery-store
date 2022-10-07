@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"my-store/models"
+	"my-store/pkg/models"
 	"my-store/responses"
 	"net/http"
 	"time"

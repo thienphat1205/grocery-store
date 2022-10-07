@@ -6,7 +6,7 @@ import (
 
 	"github.com/labstack/echo/v4"
 
-	"my-store/routes"
+	"my-store/pkg/routes"
 )
 
 func main() {
@@ -19,7 +19,7 @@ func main() {
 	//routes
 	routes.UserRoute(e)
 	routes.StoreRoute(e)
-	routes.ProductRoute(e)
+	routes.ProductRoute(e.Group("/product"))
 
 	httpPort := os.Getenv("HTTP_PORT")
 	if httpPort == "" {
