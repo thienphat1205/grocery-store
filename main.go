@@ -17,7 +17,7 @@ func main() {
 	configs.ConnectDB()
 
 	//routes
-	routes.UserRoute(e)
+	routes.UserRoute(e.Group("/user"))
 	routes.StoreRoute(e)
 	routes.ProductRoute(e.Group("/product"))
 

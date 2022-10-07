@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func SortingIssueService() api.ProductService {
+func ProductService() api.ProductService {
 	return &sortingIssueService{
 		number: 10,
 	}

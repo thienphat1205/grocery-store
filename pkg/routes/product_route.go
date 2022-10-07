@@ -7,7 +7,7 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func ProductRoute(publicGroup *echo.Group) {
-	productSv := product.SortingIssueService()
-	api.AddRoute(publicGroup, "/get-by-id", productSv.GetProductById)
+func ProductRoute(group *echo.Group) {
+	productSv := product.ProductService()
+	api.AddRoute(group, "/get-by-id", productSv.GetProductById)
 }
