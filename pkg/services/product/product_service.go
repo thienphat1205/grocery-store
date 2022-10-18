@@ -4,9 +4,10 @@ import (
 	"context"
 	"fmt"
 	api "my-store/api/product"
+	"my-store/pkg/repositories"
 )
 
-func ProductService() api.ProductService {
+func ProductService(factory repositories.Factory) api.ProductService {
 	return &sortingIssueService{
 		number: 10,
 	}

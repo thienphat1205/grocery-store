@@ -2,14 +2,16 @@ package routes
 
 import (
 	"my-store/pkg/framework/api"
+	"my-store/pkg/repositories"
 	"my-store/pkg/services/user"
 
 	"github.com/labstack/echo/v4"
 )
 
-func UserRoute(group *echo.Group) {
-	userSv := user.UserService()
+func UserRoute(group *echo.Group, factory repositories.Factory) {
+	userSv := user.UserService(factory)
 	api.AddRoute(group, "/create", userSv.CreateUser)
+	api.AddRoute(group, "/get-by-id", userSv.GetUserById)
 }
 
 // func UserRoute(e *echo.Echo) {

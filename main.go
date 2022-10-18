@@ -28,9 +28,10 @@ func main() {
 	// 	// fmt.Println("initiate server context failed", zap.Error(err))
 	// }
 	fmt.Println(gServer)
+	factory := gServer.Repositories()
 	//routes
-	routes.UserRoute(e.Group("/user"))
-	routes.ProductRoute(e.Group("/product"))
+	routes.UserRoute(e.Group("/user"), factory)
+	routes.ProductRoute(e.Group("/product"), factory)
 
 	httpPort := os.Getenv("HTTP_PORT")
 	if httpPort == "" {
